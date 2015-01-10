@@ -3,15 +3,16 @@ package com.blackgecko.moro.mod.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.blackgecko.moro.mod.Moro;
-
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+
+import com.blackgecko.moro.mod.Moro;
+import com.mojang.authlib.properties.PropertyMap;
 
 public class CommandInfo implements ICommand {
 
@@ -53,13 +54,16 @@ public class CommandInfo implements ICommand {
 	    	sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Moro   Version " +Moro.VERSION));
 		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "written by Jacky2611 and AruIke."));
 		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "use /mhelp to get a list of commands"));
+		    
+		    System.out.println(MinecraftServer.getServer().getPlayerProfileCache().getGameProfileForUsername("Jacky2611").getProperties().get("remainingTime").toString());
+		    
 		    return;
 	    }
 	    if(args.length == 1){	
 	    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "INVALID ARGUMENT(S)"));	    	
 	    }
 
-
+	    
 	    
 	}
 
