@@ -113,30 +113,7 @@ public class CommandInfo implements ICommand {
 	    		}
 	    		
 	    		
-	    	} else if(args[0].equals("time")) {
-	    		
-	    		if(args[1].equals("")){
-	    			
-	    			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Missing Arguments!"));
-	    			
-	    		} else if(args[1].equals("add")){
-	    			
-	    			if(args[2].equals("")){
-	    				
-	    				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Missing Arguments!"));
-	    				
-	    			} else {
-	    				
-	    				int mororesttime = 0;
-	    				int addtime = Integer.parseInt(args[2]);
-	    				
-	    				mororesttime = mororesttime  + addtime;
-	    				
-	    			}
-	    			
-	    		}	
-	    		
-	    	}
+	    	} 
 	    	
 	    	
 	    }

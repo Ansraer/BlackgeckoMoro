@@ -52,8 +52,9 @@ public class MoroHelp implements ICommand{
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + "++++++++++Moro Help++++++++++"));
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_GREEN + "Version: " + EnumChatFormatting.WHITE + Moro.VERSION));
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro                 --> show general information"));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro undeathban --> revive a death player"));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro time <text>  --> show general information"));
+		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro revive  --> revive a death player"));
+		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro time <text>  --> time controll"));
+		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/mtime                --> shows resttime"));
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + "++++++++++Moro Help++++++++++"));
 	}
 

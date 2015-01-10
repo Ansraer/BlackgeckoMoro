@@ -34,7 +34,7 @@ public class MoroTime implements ICommand{
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
 		// TODO Auto-generated method stub
-		return "mtime";
+		return "mtime <text> <text> <text> <text>";
 	}
 
 	@Override
@@ -47,10 +47,42 @@ public class MoroTime implements ICommand{
 	public void execute(ICommandSender sender, String[] args)
 			throws CommandException {
 
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You have " + EnumChatFormatting.WHITE + "mororesttime" + EnumChatFormatting.GOLD + " secounds!"));
 		
-	}
-
+		
+		if(args.length == 0) {
+	    	
+    		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You have " + EnumChatFormatting.WHITE + "mororesttime" + EnumChatFormatting.GOLD + " secounds!"));
+    		
+    	}
+		
+		else if(args[0].equals("add")) {
+    			
+				
+    			if(args.length == 3){
+    				
+    				
+    				System.out.println("3 arguments");
+    				/*
+    				int mororesttime = 0;
+    				int addtime = Integer.parseInt(args[2]);
+    				
+    				mororesttime = mororesttime  + addtime;
+    				*/
+    				
+    			} else {
+    				
+    				
+    				
+    				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Missing Arguments!"));
+    			}
+    			
+    		}	
+    		
+    	}
+		
+		
+		
+	
 	@Override
 	public boolean canCommandSenderUse(ICommandSender sender) {
 		// TODO Auto-generated method stub
