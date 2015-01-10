@@ -33,7 +33,7 @@ public class MoroHelp implements ICommand{
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "/mhelp shows moro help";
 	}
 
 	@Override
@@ -51,7 +51,9 @@ public class MoroHelp implements ICommand{
 			throws CommandException {
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + "++++++++++Moro Help++++++++++"));
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_GREEN + "Version: " + EnumChatFormatting.WHITE + Moro.VERSION));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro --> show general information"));
+		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro                 --> show general information"));
+		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro undeathban --> revive a death player"));
+		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro time <text>  --> show general information"));
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + "++++++++++Moro Help++++++++++"));
 	}
 
