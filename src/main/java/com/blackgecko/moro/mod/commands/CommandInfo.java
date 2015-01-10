@@ -38,7 +38,7 @@ public class CommandInfo implements ICommand {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "moro <text>";
+		return "moro";
 	}
 
 	@Override
@@ -50,16 +50,15 @@ public class CommandInfo implements ICommand {
 	public void execute(ICommandSender sender, String[] args) throws CommandException {
 	    if(args.length == 0)
 	    {
-	    	sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Moror   Version " +Moro.VERSION));
-		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "written by hjdagdjhkagsd"));
-		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "use /moror help to get a list of commands"));
+	    	sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Moro   Version " +Moro.VERSION));
+		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "written by Jacky2611 and AruIke."));
+		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "use /mhelp to get a list of commands"));
 		    return;
 	    }
-	    if(args.length == 1){
-	    	
-	    	
+	    if(args.length == 1){	
+	    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "INVALID ARGUMENT(S)"));	    	
 	    }
-	    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "INVALID ARGUMENT(S)"));
+
 
 	    
 	}
