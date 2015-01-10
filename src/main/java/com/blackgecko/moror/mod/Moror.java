@@ -1,5 +1,7 @@
 package com.blackgecko.moror.mod;
 
+import com.blackgecko.moror.mod.commands.CommandInfo;
+
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
@@ -7,6 +9,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Moror.MODID, version = Moror.VERSION, acceptableRemoteVersions = "*")
 public class Moror
@@ -17,6 +20,12 @@ public class Moror
 	public static Moror instance;
     
     
+    
+    @EventHandler
+    public void serverLoad(FMLServerStartingEvent event)
+    {
+      event.registerServerCommand(new CommandInfo());
+    }
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
