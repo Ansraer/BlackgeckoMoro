@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Moror.MODID, version = Moror.VERSION, acceptableRemoteVersions="*")
+@Mod(modid = Moror.MODID, version = Moror.VERSION, acceptableRemoteVersions = "*")
 public class Moror
 {
     public static final String MODID = "moror";
