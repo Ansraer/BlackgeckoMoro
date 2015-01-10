@@ -2,6 +2,7 @@ package com.blackgecko.moro.mod;
 
 import com.blackgecko.moro.mod.commands.CommandInfo;
 import com.blackgecko.moro.mod.commands.MoroHelp;
+import com.blackgecko.moro.mod.commands.MoroTime;
 import com.blackgecko.moro.mod.events.MoroEventHandler;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +31,7 @@ public class Moro
     {
       event.registerServerCommand(new CommandInfo());
       event.registerServerCommand(new MoroHelp());
+      event.registerServerCommand(new MoroTime());
     }
     
     @EventHandler

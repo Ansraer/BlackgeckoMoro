@@ -3,8 +3,6 @@ package com.blackgecko.moro.mod.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.blackgecko.moro.mod.Moro;
-
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -12,20 +10,17 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
-public class MoroHelp implements ICommand{
-
-	 private List aliases;
-	  public MoroHelp()
+public class MoroTime implements ICommand{
+	
+	private List aliases;
+	  public MoroTime()
 	  {
 	    this.aliases = new ArrayList();
-	    this.aliases.add("mhelp");
-	    this.aliases.add("morohelp");
-	    this.aliases.add("moroh");
+	    this.aliases.add("mtime");
 	  }
 	
-	
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -33,28 +28,27 @@ public class MoroHelp implements ICommand{
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "/mhelp shows moro help";
+		return "/mtime shows the rest of the time from a player";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "mhelp <text>";
+		// TODO Auto-generated method stub
+		return "mtime";
 	}
 
 	@Override
 	public List getAliases() {
+		// TODO Auto-generated method stub
 		return aliases;
 	}
 
 	@Override
 	public void execute(ICommandSender sender, String[] args)
 			throws CommandException {
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + "++++++++++Moro Help++++++++++"));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_GREEN + "Version: " + EnumChatFormatting.WHITE + Moro.VERSION));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro                 --> show general information"));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro undeathban --> revive a death player"));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "/moro time <text>  --> show general information"));
-		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + "++++++++++Moro Help++++++++++"));
+
+		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You have " + EnumChatFormatting.WHITE + "mororesttime" + EnumChatFormatting.GOLD + " secounds!"));
+		
 	}
 
 	@Override
