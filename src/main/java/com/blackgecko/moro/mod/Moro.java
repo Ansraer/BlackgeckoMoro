@@ -1,6 +1,6 @@
-package com.blackgecko.moror.mod;
+package com.blackgecko.moro.mod;
 
-import com.blackgecko.moror.mod.commands.CommandInfo;
+import com.blackgecko.moro.mod.commands.CommandInfo;
 
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraft.init.Blocks;
@@ -11,13 +11,13 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = Moror.MODID, version = Moror.VERSION, acceptableRemoteVersions = "*")
-public class Moror
+@Mod(modid = Moro.MODID, version = Moro.VERSION, acceptableRemoteVersions = "*")
+public class Moro
 {
     public static final String MODID = "moror";
     public static final String VERSION = "1.0";
     @Instance(MODID)
-	public static Moror instance;
+	public static Moro instance;
     
     
     

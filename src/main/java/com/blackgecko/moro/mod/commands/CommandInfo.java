@@ -1,9 +1,9 @@
-package com.blackgecko.moror.mod.commands;
+package com.blackgecko.moro.mod.commands;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.blackgecko.moror.mod.Moror;
+import com.blackgecko.moro.mod.Moro;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -21,7 +21,7 @@ public class CommandInfo implements ICommand {
 	  public CommandInfo()
 	  {
 	    this.aliases = new ArrayList();
-	    this.aliases.add("moror");
+	    this.aliases.add("moro");
 	  }
 	
 	@Override
@@ -38,7 +38,7 @@ public class CommandInfo implements ICommand {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "moror <text>";
+		return "moro <text>";
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class CommandInfo implements ICommand {
 	public void execute(ICommandSender sender, String[] args) throws CommandException {
 	    if(args.length == 0)
 	    {
-	    	sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Moror   Version " +Moror.VERSION));
+	    	sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Moror   Version " +Moro.VERSION));
 		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "written by hjdagdjhkagsd"));
 		    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "use /moror help to get a list of commands"));
 		    return;
