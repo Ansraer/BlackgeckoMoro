@@ -1,6 +1,7 @@
 package com.blackgecko.moro.mod;
 
 import com.blackgecko.moro.mod.commands.CommandInfo;
+import com.blackgecko.moro.mod.commands.MoroHelp;
 import com.blackgecko.moro.mod.events.MoroEventHandler;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -17,7 +18,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = Moro.MODID, version = Moro.VERSION, acceptableRemoteVersions = "*")
 public class Moro
 {
-    public static final String MODID = "moror";
+    public static final String MODID = "moro";
     public static final String VERSION = "1.0";
     @Instance(MODID)
 	public static Moro instance;
@@ -28,6 +29,7 @@ public class Moro
     public void serverLoad(FMLServerStartingEvent event)
     {
       event.registerServerCommand(new CommandInfo());
+      event.registerServerCommand(new MoroHelp());
     }
     
     @EventHandler
