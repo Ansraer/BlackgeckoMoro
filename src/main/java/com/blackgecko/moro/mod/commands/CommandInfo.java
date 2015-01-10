@@ -33,12 +33,12 @@ public class CommandInfo implements ICommand {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "moro";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "moro";
+		return "/moro Displays information for the Moro Mod";
 	}
 
 	@Override

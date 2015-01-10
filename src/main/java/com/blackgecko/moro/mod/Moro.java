@@ -1,9 +1,12 @@
 package com.blackgecko.moro.mod;
 
 import com.blackgecko.moro.mod.commands.CommandInfo;
+import com.blackgecko.moro.mod.events.MoroEventHandler;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraft.init.Blocks;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -37,8 +40,8 @@ public class Moro
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-		// some example code
-        System.out.println("init");
+    	FMLCommonHandler.instance().bus().register(new MoroEventHandler());
+    	MinecraftForge.EVENT_BUS.register(new MoroEventHandler());
     }
     
     @EventHandler
