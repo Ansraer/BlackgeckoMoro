@@ -1,5 +1,11 @@
 package com.blackgecko.moro.mod.playerdata;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.blackgecko.moro.mod.Moro;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,11 +36,12 @@ public class MoroPlayer implements IExtendedEntityProperties {
 
 	// We're adding mana to the player, so we'll need current and max mana
 	private int remainingTime;
-	
-	
-	int timeDay=5;
 
 	private boolean hasTimeLimit;
+	
+	private int lastPlayedDate;
+	
+	private int bannedUntilDate;
 	/*
 	 * The default constructor takes no arguments, but I put in the Entity so I
 	 * can initialize the above variable 'player'
@@ -45,8 +52,14 @@ public class MoroPlayer implements IExtendedEntityProperties {
 	public MoroPlayer(EntityPlayer player) {
 		this.player = player;
 		// Start with max mana. Every player starts with the same amount.
-		this.remainingTime= 20*60+timeDay;
+		this.remainingTime= 20*60*Moro.timeDay;
 		this.hasTimeLimit=true;
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		Date date = new Date();
+		
+		//this.bannedUntilDate=dateFormat.format(date);
+		//this.lastPlayedDate=dateFormat.format(date);
 	}
 
 	/**
@@ -76,7 +89,8 @@ public class MoroPlayer implements IExtendedEntityProperties {
 		// We only have 2 variables currently; save them both to the new tag
 		properties.setInteger("remainingTime", this.remainingTime);
 		properties.setBoolean("hasTimeLimit", this.hasTimeLimit);
-
+		properties.setInteger("lastPlayedDate", this.lastPlayedDate);
+		properties.setInteger("bannedUntilDate", this.bannedUntilDate);
 		/*
 		 * Now add our custom tag to the player's tag with a unique name (our
 		 * property's name). This will allow you to save multiple types of
@@ -99,7 +113,8 @@ public class MoroPlayer implements IExtendedEntityProperties {
 		
 		this.hasTimeLimit = properties.getBoolean("hasTimeLimit");
 		this.remainingTime = properties.getInteger("remainingTime");
-		
+		this.lastPlayedDate = properties.getInteger("lastPlayedDate");
+		this.bannedUntilDate = properties.getInteger("bannedUntilDate");
 		
 	}
 
@@ -132,6 +147,22 @@ public class MoroPlayer implements IExtendedEntityProperties {
 	}
 	public int getTime(){
 		return this.remainingTime;
+	}
+
+	public String getLastPlayedDate() {
+		return lastPlayedDate+"";
+	}
+
+	public void setLastPlayedDate(String lastPlayedDate) {
+		this.lastPlayedDate = Integer.parseInt(lastPlayedDate);
+	}
+
+	public String getBannedUntilDate() {
+		return bannedUntilDate+"";
+	}
+
+	public void setBannedUntilDate(String bannedUntilDate) {
+		this.bannedUntilDate = Integer.parseInt(bannedUntilDate);
 	}
 
 }

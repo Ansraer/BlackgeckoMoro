@@ -1,7 +1,14 @@
 package com.blackgecko.moro.mod.events;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -41,7 +48,6 @@ public class MoroEventHandler {
 	
 	//20 ticks a second
 	
-	int timeDay = 1;//Time every day in minutes
 	boolean serverHasTimeLimit = true;
 	
 	
@@ -58,10 +64,80 @@ public class MoroEventHandler {
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event){
 		if(event.entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)event.entity;
+			MoroPlayer moroPlayer = MoroPlayer.get(player);
 			
 			player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Moro   Version " +Moro.VERSION));
 			
 
+			NBTTagCompound playerData = Moro.proxy.getEntityData(((EntityPlayer) event.entity).getName());
+			// make sure the compound isn't null
+			if (playerData != null) {
+			// then load the data back into the player's IExtendedEntityProperties
+			System.out.println("Player Joined "+ event.entity.getName());
+			moroPlayer.loadNBTData(playerData);
+			
+			}
+			
+			
+				if(Moro.timeLimitEnabled){	
+				
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+				Date date = new Date();
+				
+				try {
+					date = dateFormat.parse(dateFormat.format(date));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				Date lastPlayed = null;
+				Date bannedUntil = null;
+	
+			 
+				try {
+					if(moroPlayer.getLastPlayedDate()==null || moroPlayer.getLastPlayedDate().equals("")){
+						moroPlayer.setLastPlayedDate(dateFormat.format(date));
+					}
+					if(moroPlayer.getBannedUntilDate()==null || moroPlayer.getBannedUntilDate().equals("")){
+						moroPlayer.setBannedUntilDate(dateFormat.format(date));
+					}
+					
+					lastPlayed = dateFormat.parse(moroPlayer.getLastPlayedDate());
+					bannedUntil = dateFormat.parse(moroPlayer.getBannedUntilDate());
+				
+					
+					
+					if(bannedUntil.getTime()>date.getTime()){
+						
+						dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+						((EntityPlayerMP)player).playerNetServerHandler.kickPlayerFromServer("You are banned until " + dateFormat.format(date) + ".");
+						event.setCanceled(true);
+					}
+					
+					
+					
+					
+					//long diff = dateObj2.getTime() - dateObj1.getTime();
+					
+					long diffDaysl =date.getTime() - lastPlayed.getTime();
+					int diffDays = (int) (diffDaysl / (24 * 60 * 60 * 1000));
+					
+					player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "" + diffDays +" Have passed since you logged in the last time. You got " + diffDays*Moro.timeDay*20*60 + "minutes."));
+				
+				} catch (Exception e){
+					player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "CRASHED " +e));
+				}
+				
+				
+				
+				moroPlayer.setLastPlayedDate(dateFormat.format(date));
+				
+			
+				
+				
+				
+			}
+			
 
 		}
 	}	
@@ -70,14 +146,16 @@ public class MoroEventHandler {
 	public void onPlayerTickEvent(PlayerTickEvent event){
 			EntityPlayer player = event.player;
 			MoroPlayer moroPlayer = MoroPlayer.get(player);
+
 			
-			if(serverHasTimeLimit){
+			
+			if(Moro.timeLimitEnabled){
 			
 				if(moroPlayer.getTimeLimit()){
 					moroPlayer.addTime(-1);
 					
 					if(moroPlayer.getTime()<=0){
-						//((EntityPlayerMP)player).playerNetServerHandler.kickPlayerFromServer("Your time to play for today is over...");
+						((EntityPlayerMP)player).playerNetServerHandler.kickPlayerFromServer("Your time to play for today is over...");
 					}
 
 					//System.out.println("Player " +player.getName() + " has " + moroPlayer.getTime()/20 + " secs left.");
@@ -90,12 +168,40 @@ public class MoroEventHandler {
 	}
 	
 	@SubscribeEvent
-	public void livingDeath(LivingDeathEvent event){
-		if(event.entity instanceof EntityPlayer){
+	public void onlivingDeath(LivingDeathEvent event){
+		// we only want to save data for players (most likely, anyway)
+		
+		
+		
+		
+		if (!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = ((EntityPlayer)event.entity);
+			MoroPlayer moroPlayer = MoroPlayer.get(player);
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+			Date date = new Date();
 			
 			
+			Calendar cal = Calendar.getInstance();
+	        cal.setTime(date);
+	        cal.add(Calendar.DATE, Moro.banTimeOnDeath); //minus number would decrement the days
+	        Date unbannedIn = cal.getTime();
 			
+			moroPlayer.setBannedUntilDate(dateFormat.format(unbannedIn));
+			
+			dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+			((EntityPlayerMP)player).playerNetServerHandler.kickPlayerFromServer("SHIT! You died. You are banned until " + dateFormat.format(unbannedIn) + ".");
+				
+				
+			// NOTE: See step 6 for a way to do this all in one line!!!
+			// create a new NBT Tag Compound to store the IExtendedEntityProperties data
+			NBTTagCompound playerData = new NBTTagCompound();
+			// write the data to the new compound
+			moroPlayer.get((EntityPlayer)event.entity).saveNBTData(playerData);
+			// and store it in our proxy
+			Moro.proxy.storeEntityData(((EntityPlayer) event.entity).getName(), playerData);
+			// call our handy static one-liner to save custom data to the proxy
+			//MoroPlayer.saveNBTData((EntityPlayer) event.entity);
 		}
 	}
-
 }
