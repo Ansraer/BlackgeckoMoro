@@ -1,8 +1,8 @@
 package com.blackgecko.moro.mod;
 
 import com.blackgecko.moro.mod.commands.CommandBasic;
-import com.blackgecko.moro.mod.commands.MoroHelp;
-import com.blackgecko.moro.mod.commands.MoroTime;
+import com.blackgecko.moro.mod.commands.CommandHelp;
+import com.blackgecko.moro.mod.commands.CommandTime;
 import com.blackgecko.moro.mod.events.MoroEventHandler;
 import com.blackgecko.moro.mod.proxies.CommonProxy;
 
@@ -36,8 +36,8 @@ public class Moro
     public void serverLoad(FMLServerStartingEvent event)
     {
       event.registerServerCommand(new CommandBasic());
-      event.registerServerCommand(new MoroHelp());
-      event.registerServerCommand(new MoroTime());
+      event.registerServerCommand(new CommandHelp());
+      event.registerServerCommand(new CommandTime());
     }
     
     

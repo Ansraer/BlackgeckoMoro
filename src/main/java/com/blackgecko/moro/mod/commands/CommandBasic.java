@@ -70,47 +70,53 @@ public class CommandBasic implements ICommand {
 		    return;
 	    }
 	    else if(args.length > 0){
-	    	System.out.println("ARG 0 " + args[0]);
 	    	if(args[0].equals("revive")) {
-	    		System.out.println("Args geht 1 and args length " +args.length);
+	    		boolean permissions=false;
+				if(sender instanceof EntityPlayer){
+					for(int i =0; i<MinecraftServer.getServer().getConfigurationManager().getOppedPlayerNames().length; i++){
+						if(((EntityPlayer)sender).getName().equals(MinecraftServer.getServer().getConfigurationManager().getOppedPlayerNames()[i])){
+							permissions=true;
+						}
+					}
+				} else {
+					permissions=true;
+				}
+	    		
+	    		if(args.length == 2 && permissions){
+	    			
+	    		/*
+	    		 * // using your class this time; pretend you are in some method that has access to a world object
+					someMethod(World world) {
+					// loads or creates the necessary data
+					WorldDataFH data = WorldDataFH.forWorld(world);
+					data.getData().setInteger("yourInt", someValue);
+					data.markDirty();
+					
+					if (data.getData().getInteger("yourInt") > 10) {
+					// do something
+					}
+}
+	    		 * 
+	    		 */
 	    		
 	    		
-	    		if(args.length == 2){
+	    		
 	    			
 	    			
-	    			SaveHandler saveHandler = (SaveHandler)MinecraftServer.getServer().worldServers[0].getSaveHandler();
-	    			String username = "someRandomUsername";
-	    			NBTTagCompound playerNbt = saveHandler.getPlayerNBTManager().readPlayerData(MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(args[1]));
-	    			// modify playerNbt
-	    			try {
-	    			    File playersDirectory = new File(saveHandler.getWorldDirectory(), "players");
+	    			
+	    		
+	    			
+	    			
+	    			
+	    			
+	    		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "The player " + args[1] + " can join the game again!"));
+	    			
+	    			
+	    		} else if(!permissions){
+    				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "You don't have the required permissions to perform this command."));
 
-	    			    File temp = new File(playersDirectory, username + ".dat.tmp");
-	    			    File playerFile = new File(playersDirectory, username + ".dat");
-	    			    CompressedStreamTools.writeCompressed(playerNbt, new FileOutputStream(temp));
-
-	    			   if (playerFile.exists()) {
-	    			        playerFile.delete();
-	    			    }
-	    			    temp.renameTo(playerFile);
-	    			} catch (Exception e) {
-	    			    System.out.println("Failed to save player data for " + username);
-	    			}
-	    			
-	    			
-	    			
-	    			
-	    			EntityPlayer player = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(args[1]);
-	    			
-	    			player.setDead();
-	    			
-	    			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "The player " + player.getName() + " can join the game again!"));
-	    			//if(!found){
-	    			//	sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "The player is not online or does not exist"));
-	    			//}
-	    			
-	    			
 	    		}
+
 	    		
 	    		
 	    	} 

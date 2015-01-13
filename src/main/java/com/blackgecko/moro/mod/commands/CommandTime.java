@@ -19,10 +19,10 @@ import com.blackgecko.moro.mod.Moro;
 import com.blackgecko.moro.mod.playerdata.MoroPlayer;
 import com.blackgecko.moro.mod.proxies.CommonProxy;
 
-public class MoroTime implements ICommand{
+public class CommandTime implements ICommand{
 	
 	private List aliases;
-	  public MoroTime()
+	  public CommandTime()
 	  {
 	    this.aliases = new ArrayList();
 	    this.aliases.add("mtime");
@@ -83,10 +83,7 @@ public class MoroTime implements ICommand{
 				permissions=true;
 			}
 					
-					if(permissions!=true){
-						
 
-					}
 				if(args.length == 3 && permissions){
 
     				int time=0;

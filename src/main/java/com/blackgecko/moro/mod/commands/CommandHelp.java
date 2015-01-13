@@ -12,10 +12,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
-public class MoroHelp implements ICommand{
+public class CommandHelp implements ICommand{
 
 	 private List aliases;
-	  public MoroHelp()
+	  public CommandHelp()
 	  {
 	    this.aliases = new ArrayList();
 	    this.aliases.add("mhelp");
