@@ -9,8 +9,13 @@ import java.util.Date;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -19,6 +24,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 import com.blackgecko.moro.mod.Moro;
 import com.blackgecko.moro.mod.playerdata.MoroPlayer;
+import com.blackgecko.moro.mod.playerdata.WorldDataMoro;
 
 public class MoroEventHandler {
 	
@@ -97,8 +103,34 @@ public class MoroEventHandler {
 				//SYNCING PLAYER DATA WITH DATE THAT WAS CREATED WHEN PLAYER WAS OFFLINE!!!!
 				
 				
-				
-				
+	    		String name = player.getName(); 
+	    		WorldDataMoro data = WorldDataMoro.forWorld(MinecraftServer.getServer().getEntityWorld());
+	    		NBTTagList tagList = data.getData().getTagList("MoroRevived",  NBT.TAG_COMPOUND);
+	    		
+	    		
+		    		if(tagList==null){
+		    			tagList = new NBTTagList();
+		    			player.addChatComponentMessage(new ChatComponentText("tag List is null" ));
+
+		    		}
+		    		
+		    		
+		    		boolean inList = false;
+		    		for(int i = 0; i < tagList.tagCount(); i++){
+		    			String s = tagList.getStringTagAt(i);
+		    			player.addChatComponentMessage(new ChatComponentText("found " +s));
+		    			if(s.equals(name)){
+			    			inList = true;
+			    			tagList.removeTag(i);
+		    			}
+		    		}
+		    		if(inList){
+		    			player.addChatComponentMessage(new ChatComponentText("removed you(" +player.getName() + ") from List." ));
+		    		}
+		    		data.getData().setTag("MoroRevived", tagList);
+		    		data.markDirty();
+	    		player.addChatComponentMessage(new ChatComponentText("List size:" +tagList.tagCount()));
+
 				
 				
 				
@@ -108,10 +140,10 @@ public class MoroEventHandler {
 				
 			 
 				try {
-					if(moroPlayer.getLastPlayedDate()==null || moroPlayer.getLastPlayedDate().equals("")){
+					if(moroPlayer.getLastPlayedDate()==null || moroPlayer.getLastPlayedDate().equals("") || moroPlayer.getLastPlayedDate().equals("0")){
 						moroPlayer.setLastPlayedDate(dateFormat.format(date));
 					}
-					if(moroPlayer.getBannedUntilDate()==null || moroPlayer.getBannedUntilDate().equals("")){
+					if(moroPlayer.getBannedUntilDate()==null || moroPlayer.getBannedUntilDate().equals("") || moroPlayer.getBannedUntilDate().equals("0")){
 						moroPlayer.setBannedUntilDate(dateFormat.format(date));
 					}
 					

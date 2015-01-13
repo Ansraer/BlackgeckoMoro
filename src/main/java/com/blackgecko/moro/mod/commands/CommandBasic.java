@@ -1,27 +1,24 @@
 package com.blackgecko.moro.mod.commands;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.storage.SaveHandler;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import com.blackgecko.moro.mod.Moro;
-import com.mojang.authlib.properties.PropertyMap;
+import com.blackgecko.moro.mod.playerdata.WorldDataMoro;
+import com.sun.medialib.mlib.Constants;
 
 public class CommandBasic implements ICommand {
 
@@ -99,10 +96,31 @@ public class CommandBasic implements ICommand {
 	    		 * 
 	    		 */
 	    		
+	    		String name = args[1]; 
+	    		WorldDataMoro data = WorldDataMoro.forWorld(MinecraftServer.getServer().getEntityWorld());
+	    		NBTTagList tagList =data.getData().getTagList("MoroRevived",  NBT.TAG_COMPOUND);
 	    		
 	    		
-	    			
-	    			
+		    		if(tagList==null){
+		    			tagList = new NBTTagList();
+		    		}
+		    		
+		    		
+		    		boolean alreadyInList = false;
+		    		for(int i = 0; i < tagList.tagCount(); i++){
+		    			String s = tagList.getStringTagAt(i);
+		    			if(s.equals(name)){
+			    			alreadyInList = true;
+		    		  }
+		    		}
+		    		if(!alreadyInList){
+		    			tagList.appendTag(new NBTTagString(name));
+		    		}
+	    		
+	    		
+	    		
+	    		data.getData().setTag("MoroRevived", tagList);
+	    		data.markDirty();
 	    			
 	    		
 	    			
