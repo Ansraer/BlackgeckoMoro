@@ -23,12 +23,12 @@ import net.minecraft.world.storage.SaveHandler;
 import com.blackgecko.moro.mod.Moro;
 import com.mojang.authlib.properties.PropertyMap;
 
-public class CommandInfo implements ICommand {
+public class CommandBasic implements ICommand {
 
 	
 	
 	  private List aliases;
-	  public CommandInfo()
+	  public CommandBasic()
 	  {
 	    this.aliases = new ArrayList();
 	    this.aliases.add("moro");

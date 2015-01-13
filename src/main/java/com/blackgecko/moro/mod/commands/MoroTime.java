@@ -2,6 +2,7 @@ package com.blackgecko.moro.mod.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -25,6 +26,7 @@ public class MoroTime implements ICommand{
 	  {
 	    this.aliases = new ArrayList();
 	    this.aliases.add("mtime");
+	    this.aliases.add("mtime add");
 	  }
 	
 	@Override
@@ -59,15 +61,34 @@ public class MoroTime implements ICommand{
 		
 		if(args.length == 0 && (sender.getCommandSenderEntity() instanceof EntityPlayer)) {
 	    	
-    		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You have " + EnumChatFormatting.WHITE + MoroPlayer.get(((EntityPlayer)sender.getCommandSenderEntity())).getTime()/20 + EnumChatFormatting.GOLD + " secounds!"));
-    		
+			
+			long minute = TimeUnit.SECONDS.toMinutes(MoroPlayer.get(((EntityPlayer)sender.getCommandSenderEntity())).getTime()/20);
+	        long second = TimeUnit.SECONDS.toSeconds(MoroPlayer.get(((EntityPlayer)sender.getCommandSenderEntity())).getTime()/20) - TimeUnit.MINUTES.toSeconds(minute);
+
+			
+    		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You have " + EnumChatFormatting.WHITE + minute + EnumChatFormatting.GOLD + " minutes and " +EnumChatFormatting.WHITE+ second + EnumChatFormatting.GOLD + " seconds left."));
+
     	}
 		
 		else if(args[0].equals("add")) {
     			
-				if(args.length == 3){
-
+			boolean permissions=false;
+			if(sender instanceof EntityPlayer){
+				for(int i =0; i<MinecraftServer.getServer().getConfigurationManager().getOppedPlayerNames().length; i++){
+					if(((EntityPlayer)sender).getName().equals(MinecraftServer.getServer().getConfigurationManager().getOppedPlayerNames()[i])){
+						permissions=true;
+					}
+				}
+			} else {
+				permissions=true;
+			}
 					
+					if(permissions!=true){
+						
+
+					}
+				if(args.length == 3 && permissions){
+
     				int time=0;
     				try {
     				      time = Integer.parseInt(args[1]);
@@ -78,7 +99,7 @@ public class MoroTime implements ICommand{
 
     				boolean online = false;
     				for(int i=0; i<MinecraftServer.getServer().worldServers[0].playerEntities.size(); i++){
-    				if(((EntityPlayer)MinecraftServer.getServer().worldServers[0].playerEntities.get(i)).getName().equalsIgnoreCase(args[2])){
+    				if(((EntityPlayer)MinecraftServer.getServer().worldServers[0].playerEntities.get(i)).getName().equals(args[2])){
     					online = true;//Player is online
     				}
     				}
@@ -86,20 +107,26 @@ public class MoroTime implements ICommand{
     				if(online){
     					
     					EntityPlayer player = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(args[2]);
-    					System.out.println("Test "+player.getName());
     					MoroPlayer.get(player).addTime(time*20*60);
+    					
+    					
+    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Added " +EnumChatFormatting.WHITE + time +EnumChatFormatting.GOLD + " minutes to " +EnumChatFormatting.WHITE + args[2] +EnumChatFormatting.GOLD + "."));
+    					player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You got " +EnumChatFormatting.WHITE + time +EnumChatFormatting.GOLD + " minutes from " +EnumChatFormatting.WHITE + sender.getName() +EnumChatFormatting.GOLD + "."));
     				} else {
     					
-    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + args[1] +  "Player is not online."));
+    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + args[2] +  "Player could not be found."));
     				}
     				
     				
     				
     			} else {
+    				if(permissions){
+    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Missing Arguments!"));
+    				} else {
+	    				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "You don't have the required permissions to perform this command."));
+    				}
     				
     				
-    				
-    				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Missing Arguments!"));
     			}
     			
     		}	

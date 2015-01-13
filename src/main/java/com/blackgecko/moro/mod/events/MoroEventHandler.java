@@ -92,7 +92,20 @@ public class MoroEventHandler {
 				
 				Date lastPlayed = null;
 				Date bannedUntil = null;
-	
+
+				
+				//SYNCING PLAYER DATA WITH DATE THAT WAS CREATED WHEN PLAYER WAS OFFLINE!!!!
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			 
 				try {
 					if(moroPlayer.getLastPlayedDate()==null || moroPlayer.getLastPlayedDate().equals("")){
@@ -115,15 +128,17 @@ public class MoroEventHandler {
 					}
 					
 					
-					
-					
-					//long diff = dateObj2.getTime() - dateObj1.getTime();
-					
 					long diffDaysl =date.getTime() - lastPlayed.getTime();
 					int diffDays = (int) (diffDaysl / (24 * 60 * 60 * 1000));
 					
 					player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "" + diffDays +" Have passed since you logged in the last time. You got " + diffDays*Moro.timeDay*20*60 + "minutes."));
 				
+					
+					
+					
+					//long diff = dateObj2.getTime() - dateObj1.getTime();
+					
+
 				} catch (Exception e){
 					player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "CRASHED " +e));
 				}
@@ -176,23 +191,26 @@ public class MoroEventHandler {
 		
 		if (!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayer)
 		{
+			
 			EntityPlayer player = ((EntityPlayer)event.entity);
 			MoroPlayer moroPlayer = MoroPlayer.get(player);
-			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-			Date date = new Date();
-			
-			
-			Calendar cal = Calendar.getInstance();
-	        cal.setTime(date);
-	        cal.add(Calendar.DATE, Moro.banTimeOnDeath); //minus number would decrement the days
-	        Date unbannedIn = cal.getTime();
-			
-			moroPlayer.setBannedUntilDate(dateFormat.format(unbannedIn));
-			
-			dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-			((EntityPlayerMP)player).playerNetServerHandler.kickPlayerFromServer("SHIT! You died. You are banned until " + dateFormat.format(unbannedIn) + ".");
+
+			if(Moro.banTimeOnDeath>0){										//CHECK IF PLAYER SHOULD BE BANNED!
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+				Date date = new Date();
 				
 				
+				Calendar cal = Calendar.getInstance();
+		        cal.setTime(date);
+		        cal.add(Calendar.DATE, Moro.banTimeOnDeath); //minus number would decrement the days
+		        Date unbannedIn = cal.getTime();
+				
+				moroPlayer.setBannedUntilDate(dateFormat.format(unbannedIn));
+				
+				dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+				((EntityPlayerMP)player).playerNetServerHandler.kickPlayerFromServer("SHIT! You died. You are banned until " + dateFormat.format(unbannedIn) + ".");
+					
+			}
 			// NOTE: See step 6 for a way to do this all in one line!!!
 			// create a new NBT Tag Compound to store the IExtendedEntityProperties data
 			NBTTagCompound playerData = new NBTTagCompound();

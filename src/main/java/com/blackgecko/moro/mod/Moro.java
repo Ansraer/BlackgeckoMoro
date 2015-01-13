@@ -1,6 +1,6 @@
 package com.blackgecko.moro.mod;
 
-import com.blackgecko.moro.mod.commands.CommandInfo;
+import com.blackgecko.moro.mod.commands.CommandBasic;
 import com.blackgecko.moro.mod.commands.MoroHelp;
 import com.blackgecko.moro.mod.commands.MoroTime;
 import com.blackgecko.moro.mod.events.MoroEventHandler;
@@ -35,7 +35,7 @@ public class Moro
     @EventHandler
     public void serverLoad(FMLServerStartingEvent event)
     {
-      event.registerServerCommand(new CommandInfo());
+      event.registerServerCommand(new CommandBasic());
       event.registerServerCommand(new MoroHelp());
       event.registerServerCommand(new MoroTime());
     }
@@ -55,10 +55,10 @@ public class Moro
 
         timeLimitEnabled = config.get(Configuration.CATEGORY_GENERAL, "TimeLimitEnabled", false).getBoolean(false);
         
-        timeDay = config.getInt("TimeEveryDay(MIN)", Configuration.CATEGORY_GENERAL, 30, 10, 1440, "Time added every day to a players play time");
+        timeDay = config.getInt("TimeEveryDayMIN", Configuration.CATEGORY_GENERAL, 30, 10, 1440, "Time added every day to a players play time");
 
         banTimeOnDeath = config.getInt("BanTime", Configuration.CATEGORY_GENERAL, 0, 0, Integer.MAX_VALUE, "How Long Should a player be banned after death?");
-        
+
 
         config.save();
     }
