@@ -153,16 +153,16 @@ public class MoroPlayer implements IExtendedEntityProperties {
 		return lastPlayedDate+"";
 	}
 
-	public void setLastPlayedDate(String lastPlayedDate) {
-		this.lastPlayedDate = Integer.parseInt(lastPlayedDate);
+	public void setLastPlayedDate(int lastPlayedDate) {
+		this.lastPlayedDate = lastPlayedDate;
 	}
 
 	public String getBannedUntilDate() {
 		return bannedUntilDate+"";
 	}
 
-	public void setBannedUntilDate(String bannedUntilDate) {
-		this.bannedUntilDate = Integer.parseInt(bannedUntilDate);
+	public void setBannedUntilDate(int bannedUntilDate) {
+		this.bannedUntilDate = bannedUntilDate;
 	}
 
 }

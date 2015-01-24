@@ -8,6 +8,7 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
@@ -98,7 +99,7 @@ public class CommandBasic implements ICommand {
 	    		
 	    		String name = args[1]; 
 	    		WorldDataMoro data = WorldDataMoro.forWorld(MinecraftServer.getServer().getEntityWorld());
-	    		NBTTagList tagList =data.getData().getTagList("MoroRevived",  NBT.TAG_COMPOUND);
+	    		NBTTagList tagList =data.getData().getTagList("MoroRevived",  NBT.TAG_STRING);
 	    		
 	    		
 		    		if(tagList==null){
@@ -109,11 +110,12 @@ public class CommandBasic implements ICommand {
 		    		boolean alreadyInList = false;
 		    		for(int i = 0; i < tagList.tagCount(); i++){
 		    			String s = tagList.getStringTagAt(i);
-		    			if(s.equals(name)){
+		    			if(s.equalsIgnoreCase(name)){
 			    			alreadyInList = true;
 		    		  }
 		    		}
 		    		if(!alreadyInList){
+
 		    			tagList.appendTag(new NBTTagString(name));
 		    		}
 	    		
@@ -132,7 +134,6 @@ public class CommandBasic implements ICommand {
 	    			
 	    		} else if(!permissions){
     				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "You don't have the required permissions to perform this command."));
-
 	    		}
 
 	    		

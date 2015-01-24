@@ -10,13 +10,17 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.Constants.NBT;
 
 import com.blackgecko.moro.mod.Moro;
 import com.blackgecko.moro.mod.playerdata.MoroPlayer;
+import com.blackgecko.moro.mod.playerdata.WorldDataMoro;
 import com.blackgecko.moro.mod.proxies.CommonProxy;
 
 public class CommandTime implements ICommand{
@@ -66,7 +70,7 @@ public class CommandTime implements ICommand{
 	        long second = TimeUnit.SECONDS.toSeconds(MoroPlayer.get(((EntityPlayer)sender.getCommandSenderEntity())).getTime()/20) - TimeUnit.MINUTES.toSeconds(minute);
 
 			
-    		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You have " + EnumChatFormatting.WHITE + minute + EnumChatFormatting.GOLD + " minutes and " +EnumChatFormatting.WHITE+ second + EnumChatFormatting.GOLD + " seconds left."));
+    		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "You have " + EnumChatFormatting.GOLD + minute + EnumChatFormatting.WHITE + " minutes and " +EnumChatFormatting.GOLD+ second + EnumChatFormatting.WHITE + " seconds left."));
 
     	}
 		
@@ -107,11 +111,37 @@ public class CommandTime implements ICommand{
     					MoroPlayer.get(player).addTime(time*20*60);
     					
     					
-    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Added " +EnumChatFormatting.WHITE + time +EnumChatFormatting.GOLD + " minutes to " +EnumChatFormatting.WHITE + args[2] +EnumChatFormatting.GOLD + "."));
-    					player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "You got " +EnumChatFormatting.WHITE + time +EnumChatFormatting.GOLD + " minutes from " +EnumChatFormatting.WHITE + sender.getName() +EnumChatFormatting.GOLD + "."));
+    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Added " +EnumChatFormatting.GOLD + time +EnumChatFormatting.WHITE + " minutes to " +EnumChatFormatting.GOLD + args[2] +EnumChatFormatting.WHITE + "."));
+    					player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "You got " +EnumChatFormatting.GOLD + time +EnumChatFormatting.WHITE + " minutes from " +EnumChatFormatting.GOLD + sender.getName() +EnumChatFormatting.WHITE + "."));
     				} else {
+    				
+    					String name = args[2];
+    		    		WorldDataMoro data = WorldDataMoro.forWorld(MinecraftServer.getServer().getEntityWorld());
+    		    		NBTTagList tagList =data.getData().getTagList("MoroTimeAdd",  NBT.TAG_STRING);
+    		    		
+    		    		
+    			    		if(tagList==null){
+    			    			tagList = new NBTTagList();
+    			    		}
+    			    		
+    			    		
+    			    		boolean alreadyInList = false;
+    			    		for(int i = 0; i < tagList.tagCount(); i++){
+    			    			String s = tagList.getStringTagAt(i);
+    			    			if(s.equalsIgnoreCase(name)){
+    				    			alreadyInList = true;
+    			    		  }
+    			    		}
+    			    		if(!alreadyInList){
+
+    			    			tagList.appendTag(new NBTTagString(name));
+    			    		}
+    		    		
+    		    		data.getData().setTag("MoroTimeAdd", tagList);
+    		    		data.markDirty();
     					
-    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + args[2] +  "Player could not be found."));
+
+    					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "The player " + args[2] +  " could not be found. Should he already be out of time he should be able to join again."));
     				}
     				
     				

@@ -72,8 +72,15 @@ public class MoroEventHandler {
 			EntityPlayer player = (EntityPlayer)event.entity;
 			MoroPlayer moroPlayer = MoroPlayer.get(player);
 			
-			player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Moro   Version " +Moro.VERSION));
 			
+			player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "     WELCOME!"));
+			player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + ""));
+			player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "     This is a server using MORO version " +Moro.VERSION));
+			player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "     use /moro to get more informations."));
+			player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "   #####################################"));
+			player.addChatMessage(new ChatComponentText(""));
+
+
 
 			NBTTagCompound playerData = Moro.proxy.getEntityData(((EntityPlayer) event.entity).getName());
 			// make sure the compound isn't null
@@ -105,46 +112,73 @@ public class MoroEventHandler {
 				
 	    		String name = player.getName(); 
 	    		WorldDataMoro data = WorldDataMoro.forWorld(MinecraftServer.getServer().getEntityWorld());
-	    		NBTTagList tagList = data.getData().getTagList("MoroRevived",  NBT.TAG_COMPOUND);
+	    		NBTTagList tagList;
+	    		
+	    		//UNBAN
+	    		tagList = data.getData().getTagList("MoroRevived",  NBT.TAG_STRING);
 	    		
 	    		
 		    		if(tagList==null){
 		    			tagList = new NBTTagList();
-		    			player.addChatComponentMessage(new ChatComponentText("tag List is null" ));
-
 		    		}
 		    		
 		    		
 		    		boolean inList = false;
 		    		for(int i = 0; i < tagList.tagCount(); i++){
 		    			String s = tagList.getStringTagAt(i);
-		    			player.addChatComponentMessage(new ChatComponentText("found " +s));
-		    			if(s.equals(name)){
+		    			if(s.equalsIgnoreCase(name)){
 			    			inList = true;
 			    			tagList.removeTag(i);
 		    			}
 		    		}
 		    		if(inList){
-		    			player.addChatComponentMessage(new ChatComponentText("removed you(" +player.getName() + ") from List." ));
+		    			moroPlayer.setBannedUntilDate(0);
 		    		}
 		    		data.getData().setTag("MoroRevived", tagList);
 		    		data.markDirty();
-	    		player.addChatComponentMessage(new ChatComponentText("List size:" +tagList.tagCount()));
 
+		    	
+		    		
+		    	//ADD TIME	
+		    	tagList = data.getData().getTagList("MoroTimeAdd",  NBT.TAG_STRING);
+		    		
+		    		
+		    		if(tagList==null){
+		    			tagList = new NBTTagList();
+		    		}
+		    		
+		    		
+		    		inList = false;
+		    		for(int i = 0; i < tagList.tagCount(); i++){
+		    			String s = tagList.getStringTagAt(i);
+		    			if(s.equalsIgnoreCase(name)){
+			    			inList = true;
+			    			tagList.removeTag(i);
+		    			}
+		    		}
+		    		if(inList){
+		    			if(moroPlayer.getTime()<1){
+		    				
+		    				int time=10;
+		    				moroPlayer.setTime(20*60*time);
+		    			}
+		    		}
+		    		data.getData().setTag("MoroTimeAdd", tagList);
+		    		data.markDirty();
 				
 				
 				
 				
 				
-				
+				// KICKING IF DEAD AND ADDING TIME
 				
 			 
 				try {
 					if(moroPlayer.getLastPlayedDate()==null || moroPlayer.getLastPlayedDate().equals("") || moroPlayer.getLastPlayedDate().equals("0")){
-						moroPlayer.setLastPlayedDate(dateFormat.format(date));
+						moroPlayer.setLastPlayedDate(Integer.parseInt(dateFormat.format(date)));
 					}
 					if(moroPlayer.getBannedUntilDate()==null || moroPlayer.getBannedUntilDate().equals("") || moroPlayer.getBannedUntilDate().equals("0")){
-						moroPlayer.setBannedUntilDate(dateFormat.format(date));
+						moroPlayer.setBannedUntilDate(Integer.parseInt(dateFormat.format(date)));
 					}
 					
 					lastPlayed = dateFormat.parse(moroPlayer.getLastPlayedDate());
@@ -163,10 +197,11 @@ public class MoroEventHandler {
 					long diffDaysl =date.getTime() - lastPlayed.getTime();
 					int diffDays = (int) (diffDaysl / (24 * 60 * 60 * 1000));
 					
-					player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "" + diffDays +" Have passed since you logged in the last time. You got " + diffDays*Moro.timeDay*20*60 + "minutes."));
+					player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "     " + diffDays +EnumChatFormatting.WHITE +" days have passed since you logged in the last time. You got " +EnumChatFormatting.GOLD + diffDays*Moro.timeDay*20*60 + EnumChatFormatting.WHITE +" minutes."));
 				
 					
-					
+					moroPlayer.setLastPlayedDate(Integer.parseInt(dateFormat.format(date)));
+
 					
 					//long diff = dateObj2.getTime() - dateObj1.getTime();
 					
@@ -174,12 +209,8 @@ public class MoroEventHandler {
 				} catch (Exception e){
 					player.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "CRASHED " +e));
 				}
-				
-				
-				
-				moroPlayer.setLastPlayedDate(dateFormat.format(date));
-				
-			
+								
+				//PLAYER IS MAYBE ALREADY OFFLINE!
 				
 				
 				
@@ -237,7 +268,7 @@ public class MoroEventHandler {
 		        cal.add(Calendar.DATE, Moro.banTimeOnDeath); //minus number would decrement the days
 		        Date unbannedIn = cal.getTime();
 				
-				moroPlayer.setBannedUntilDate(dateFormat.format(unbannedIn));
+				moroPlayer.setBannedUntilDate(Integer.parseInt(dateFormat.format(unbannedIn)));
 				
 				dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 				((EntityPlayerMP)player).playerNetServerHandler.kickPlayerFromServer("SHIT! You died. You are banned until " + dateFormat.format(unbannedIn) + ".");
